@@ -1,8 +1,39 @@
 import React from "react";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import { Row, Col, Grid, InputGroup } from "react-bootstrap";
+import Predict from "./predict/predict";
+import {
+	BrowserRouter as Router,
+	Route,
+	Switch,
+	Redirect,
+} from "react-router-dom";
+import Layout from "./layout/layout";
+import Login from "./login/login";
 
-function App() {}
+const PrivateRoute = ({ component: Component, ...rest }) => (
+	<Route
+		{...rest}
+		render={(props) =>
+			props.location.state.responseState.isAuthenticated === true ? (
+				<Component {...props} />
+			) : (
+				<Redirect to="/login" />
+			)
+		}
+	/>
+);
+
+function App() {
+	return (
+		<React.Fragment>
+			<Router>
+				<Layout />
+				<Switch>
+					<Route exact path="/login" component={Login} />
+					<PrivateRoute path="/predict" component={Predict} />
+				</Switch>
+			</Router>
+		</React.Fragment>
+	);
+}
 
 export default App;
