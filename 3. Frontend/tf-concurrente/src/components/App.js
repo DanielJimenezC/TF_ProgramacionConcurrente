@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import Predict from "./predict/predict";
 import {
 	BrowserRouter as Router,
@@ -22,18 +22,36 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
 	/>
 );
 
-function App() {
-	return (
-		<React.Fragment>
-			<Router>
-				<Layout />
-				<Switch>
-					<Route exact path="/login" component={Login} />
-					<PrivateRoute path="/predict" component={Predict} />
-				</Switch>
-			</Router>
-		</React.Fragment>
-	);
+class App extends Component {
+	constructor(props) {
+		super(props);
+		this.handleLogIn = this.handleLogIn.bind(this);
+		this.state = { userName: "" };
+	}
+
+	handleLogIn(newName) {
+		this.setState({
+			userName: newName,
+		});
+	}
+
+	render() {
+		return (
+			<React.Fragment>
+				<Router>
+					<Layout userName={this.state.userName} />
+					<Switch>
+						<Route
+							exact
+							path="/login"
+							render={(props) => <Login onLogIn={this.handleLogIn} />}
+						/>
+						<PrivateRoute path="/predict" component={Predict} />
+					</Switch>
+				</Router>
+			</React.Fragment>
+		);
+	}
 }
 
 export default App;

@@ -3,13 +3,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { Row, Col, Grid, InputGroup } from "react-bootstrap";
 import "./login.css";
-import {
-	BrowserRouter as Router,
-	Route,
-	Switch,
-	Redirect,
-} from "react-router-dom";
-import { toJS } from "mobx";
+import { withRouter } from "react-router-dom";
 
 class Login extends Component {
 	state = {
@@ -26,6 +20,7 @@ class Login extends Component {
 			[name]: value,
 		});
 	};
+
 	submitForm = () => {
 		this.state.isAuthenticated = true;
 		this.setState({
@@ -34,6 +29,7 @@ class Login extends Component {
 		this.props.history.push("/predict", {
 			responseState: this.state,
 		});
+		this.props.onLogIn(this.state.userName);
 	};
 
 	render() {
@@ -77,4 +73,4 @@ class Login extends Component {
 	}
 }
 
-export default Login;
+export default withRouter(Login);
