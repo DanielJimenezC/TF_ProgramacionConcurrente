@@ -3,9 +3,35 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { Row, Col, Grid, InputGroup } from "react-bootstrap";
 import "./login.css";
+import { withRouter } from "react-router-dom";
 
 class Login extends Component {
-	state = {};
+	state = {
+		isAuthenticated: false,
+		userName: "",
+	};
+
+	handleChange = (event) => {
+		const target = event.target;
+		const value = target.value;
+		const name = target.name;
+
+		this.setState({
+			[name]: value,
+		});
+	};
+
+	submitForm = () => {
+		this.state.isAuthenticated = true;
+		this.setState({
+			isAuthenticated: true,
+		});
+		this.props.history.push("/predict", {
+			responseState: this.state,
+		});
+		this.props.onLogIn(this.state.userName);
+	};
+
 	render() {
 		return (
 			<React.Fragment>
@@ -14,7 +40,13 @@ class Login extends Component {
 						<Col>
 							<Form.Label>Username</Form.Label>
 							<InputGroup className="mb-2">
-								<Form.Control type="text" placeholder="Username" />
+								<Form.Control
+									type="text"
+									placeholder="Username"
+									name="userName"
+									value={this.state.userName}
+									onChange={this.handleChange}
+								/>
 							</InputGroup>
 						</Col>
 					</Form.Row>
@@ -28,7 +60,11 @@ class Login extends Component {
 					</Form.Row>
 				</Form>
 				<div className="centerdiv">
-					<Button variant="primary" className="button">
+					<Button
+						variant="primary"
+						className="button"
+						onClick={this.submitForm}
+					>
 						Login
 					</Button>{" "}
 				</div>
@@ -37,4 +73,4 @@ class Login extends Component {
 	}
 }
 
-export default Login;
+export default withRouter(Login);

@@ -3,11 +3,12 @@ import ReactDOM from "react-dom";
 import App from "./components/App";
 import * as serviceWorker from "./serviceWorker";
 import Login from "./components/login/login";
+import Layout from "./components/layout/layout";
 import "bootstrap/dist/css/bootstrap.css";
 
 ReactDOM.render(
 	<React.StrictMode>
-		<Login />
+		<App />
 	</React.StrictMode>,
 	document.getElementById("root")
 );
