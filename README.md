@@ -12,6 +12,10 @@ Install Go Package mux.
 
     go get github.com/gorilla/mux
 
+Install Go Package yaml
+
+    got get gopkg.in/yaml.v3
+
 #### Build & Run Api
 
 Go to CovidAppApi package then build it.
@@ -32,6 +36,19 @@ Api is running on localhost:5000
 GET
 
     /api/users
+
+    response:
+    [
+        {
+            id: "id",
+            username: "username",
+            password: "password"
+        }
+    ]
+
+GET
+
+    /api/users/{id}
 
     response:
     {
