@@ -7,7 +7,7 @@ import { withRouter } from "react-router-dom";
 
 class Login extends Component {
 	state = {
-		isAuthenticated: false,
+		isAuthenticated: "",
 		userName: "",
 	};
 
@@ -22,13 +22,18 @@ class Login extends Component {
 	};
 
 	submitForm = () => {
-		this.state.isAuthenticated = true;
-		this.setState({
-			isAuthenticated: true,
-			userName: this.state.userName,
-		});
-		this.props.history.push("/predict");
-		this.props.onLogIn(this.state.isAuthenticated, this.state.userName);
+		localStorage.setItem("auth", true);
+		localStorage.setItem("username", this.state.userName);
+		this.setState(
+			{
+				isAuthenticated: true,
+				userName: this.state.userName,
+			},
+			() => {
+				this.props.onLogIn(this.state.isAuthenticated, this.state.userName);
+				this.props.history.push("/predict");
+			}
+		);
 	};
 
 	render() {

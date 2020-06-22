@@ -8,19 +8,7 @@ import {
 } from "react-router-dom";
 import Layout from "./layout/layout";
 import Login from "./login/login";
-
-const PrivateRoute = ({ component: Component, ...rest }) => (
-	<Route
-		{...rest}
-		render={(props) =>
-			props.location.state.responseState.isAuthenticated === true ? (
-				<Component {...props} />
-			) : (
-				<Redirect to="/login" />
-			)
-		}
-	/>
-);
+import Faq from "./faq/faq";
 
 class App extends Component {
 	constructor(props) {
@@ -39,8 +27,8 @@ class App extends Component {
 	render() {
 		return (
 			<React.Fragment>
+				<Layout state={this.state} />
 				<Router>
-					<Layout state={this.state} />
 					<Switch>
 						<Route
 							exact
@@ -51,8 +39,19 @@ class App extends Component {
 							exact
 							path="/predict"
 							render={(props) =>
-								this.state.isAuthenticated === true ? (
+								Boolean(localStorage.getItem("auth")) === true ? (
 									<Predict state={this.state} />
+								) : (
+									<Redirect to="/login" />
+								)
+							}
+						/>
+						<Route
+							exact
+							path="/faq"
+							render={(props) =>
+								Boolean(localStorage.getItem("auth")) === true ? (
+									<Faq state={this.state} />
 								) : (
 									<Redirect to="/login" />
 								)

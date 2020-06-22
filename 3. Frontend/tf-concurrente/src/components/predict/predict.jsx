@@ -3,6 +3,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { Row, Col, Grid, InputGroup } from "react-bootstrap";
 import "./predict.css";
+import { withRouter } from "react-router-dom";
 
 class Predict extends Component {
 	state = {
@@ -19,6 +20,10 @@ class Predict extends Component {
 		this.setState({
 			[name]: value,
 		});
+	};
+
+	submitForm = () => {
+		localStorage.clear();
 	};
 
 	render() {
@@ -130,4 +135,4 @@ class Predict extends Component {
 	}
 }
 
-export default Predict;
+export default withRouter(Predict);
