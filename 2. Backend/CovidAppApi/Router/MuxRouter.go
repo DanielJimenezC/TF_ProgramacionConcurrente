@@ -22,12 +22,16 @@ func (*muxRouter) GET(uri string, f func(w http.ResponseWriter, r *http.Request)
 	muxDispacher.HandleFunc(uri, f).Methods("GET")
 }
 
-func (*muxRouter) GETBY(uri string, f func(w http.ResponseWriter, r *http.Request)) {
-	muxDispacher.HandleFunc(uri, f).Methods("GET")
+func (*muxRouter) PUT(uri string, f func(w http.ResponseWriter, r *http.Request)) {
+	muxDispacher.HandleFunc(uri, f).Methods("PUT")
 }
 
 func (*muxRouter) POST(uri string, f func(w http.ResponseWriter, r *http.Request)) {
 	muxDispacher.HandleFunc(uri, f).Methods("POST")
+}
+
+func (*muxRouter) DELETE(uri string, f func(w http.ResponseWriter, r *http.Request)) {
+	muxDispacher.HandleFunc(uri, f).Methods("DELETE")
 }
 
 func (*muxRouter) SERVE(port string) {

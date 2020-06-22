@@ -22,6 +22,8 @@ type IUserController interface {
 	GetAll(response http.ResponseWriter, request *http.Request)
 	Create(response http.ResponseWriter, request *http.Request)
 	GetByID(response http.ResponseWriter, request *http.Request)
+	Update(response http.ResponseWriter, request *http.Request)
+	Delete(response http.ResponseWriter, request *http.Request)
 }
 
 // UserController Implementation
@@ -62,12 +64,14 @@ func (*controller) Create(response http.ResponseWriter, request *http.Request) {
 			response.WriteHeader(http.StatusInternalServerError)
 			json.NewEncoder(response).Encode(servError.ServiceError{Message: "Error creating users"})
 		}
-		response.WriteHeader(http.StatusOK)
+		response.WriteHeader(http.StatusCreated)
 		json.NewEncoder(response).Encode(user)
 	}
 }
 
+// GetbByID User
 func (*controller) GetByID(response http.ResponseWriter, request *http.Request) {
+	response.Header().Set("Content-Type", "application/json")
 	vars := mux.Vars(request)
 	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
@@ -79,7 +83,51 @@ func (*controller) GetByID(response http.ResponseWriter, request *http.Request) 
 		response.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(response).Encode(servError.ServiceError{Message: err1.Error()})
 	}
+	response.WriteHeader(http.StatusOK)
+	json.NewEncoder(response).Encode(user)
+}
+
+// Delete user
+func (*controller) Delete(response http.ResponseWriter, request *http.Request) {
 	response.Header().Set("Content-Type", "application/json")
+	vars := mux.Vars(request)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		response.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(response).Encode(servError.ServiceError{Message: err.Error()})
+	}
+	err1 := userServ.Delete(id)
+	if err1 != nil {
+		response.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(response).Encode(servError.ServiceError{Message: err1.Error()})
+	}
+	response.WriteHeader(http.StatusOK)
+	json.NewEncoder(response).Encode(id)
+}
+
+// Update user
+func (*controller) Update(response http.ResponseWriter, request *http.Request) {
+	response.Header().Set("Content-Type", "application/json")
+	var user model.User
+
+	err := json.NewDecoder(request.Body).Decode(&user)
+	if err != nil {
+		response.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(response).Encode(servError.ServiceError{Message: "Error decode Json users"})
+	}
+
+	vars := mux.Vars(request)
+	id, err1 := strconv.Atoi(vars["id"])
+	if err1 != nil {
+		response.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(response).Encode(servError.ServiceError{Message: err1.Error()})
+	}
+
+	err2 := userServ.Update(id, user)
+	if err2 != nil {
+		response.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(response).Encode(servError.ServiceError{Message: err2.Error()})
+	}
 	response.WriteHeader(http.StatusOK)
 	json.NewEncoder(response).Encode(user)
 }

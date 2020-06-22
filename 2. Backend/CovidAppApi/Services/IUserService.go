@@ -8,4 +8,6 @@ type IUserService interface {
 	GetAll() ([]entity.User, error)
 	Validate(user *entity.User) error
 	GetByID(id int) (entity.User, error)
+	Delete(id int) error
+	Update(id int, user entity.User) error
 }

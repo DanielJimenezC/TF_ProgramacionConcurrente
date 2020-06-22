@@ -56,3 +56,19 @@ func (*serv) GetByID(id int) (entity.User, error) {
 	}
 	return response, nil
 }
+
+func (*serv) Delete(id int) error {
+	err := userRepo.Delete(id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (*serv) Update(id int, user entity.User) error {
+	err := userRepo.Update(id, user)
+	if err != nil {
+		return err
+	}
+	return nil
+}

@@ -41,7 +41,7 @@ func (*repo) Create(user model.User) error {
 }
 
 func (*repo) GetAll() ([]model.User, error) {
-	q := `SELECT * FROM public."user"`
+	q := `SELECT * FROM public."user" ORDER BY id ASC`
 	db := context.GetConnection()
 	defer db.Close()
 
@@ -77,4 +77,52 @@ func (*repo) GetUser(id int) (entity.User, error) {
 		return user, nil
 	}
 	return user, nil
+}
+
+func (*repo) Delete(id int) error {
+	q := `DELETE FROM public."user" WHERE id = $1`
+	db := context.GetConnection()
+
+	stmt, err := db.Prepare(q)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	r, err := stmt.Exec(id)
+	if err != nil {
+		return err
+	}
+
+	i, _ := r.RowsAffected()
+
+	if i != 1 {
+		return errors.New("Error: Se esperaba 1 fila afectada")
+	}
+
+	return nil
+}
+
+func (*repo) Update(id int, user entity.User) error {
+	q := `UPDATE public."user" SET username=$1, password=$2 WHERE id = $3`
+	db := context.GetConnection()
+
+	stmt, err := db.Prepare(q)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	r, err := stmt.Exec(user.Username, user.Password, id)
+	if err != nil {
+		return err
+	}
+
+	i, _ := r.RowsAffected()
+
+	if i != 1 {
+		return errors.New("Error: Se esperaba 1 fila afectada")
+	}
+
+	return nil
 }
