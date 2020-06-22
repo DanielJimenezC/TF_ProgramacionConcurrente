@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -39,9 +40,10 @@ func (*controller) GetAll(response http.ResponseWriter, request *http.Request) {
 	if err != nil {
 		response.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(response).Encode(servError.ServiceError{Message: "Error getting the users"})
+	} else {
+		response.WriteHeader(http.StatusOK)
+		json.NewEncoder(response).Encode(users)
 	}
-	response.WriteHeader(http.StatusOK)
-	json.NewEncoder(response).Encode(users)
 }
 
 // Create User
@@ -63,10 +65,11 @@ func (*controller) Create(response http.ResponseWriter, request *http.Request) {
 		err1 := userServ.Create(user)
 		if err1 != nil {
 			response.WriteHeader(http.StatusInternalServerError)
-			json.NewEncoder(response).Encode(servError.ServiceError{Message: "Error creating users"})
+			json.NewEncoder(response).Encode(servError.ServiceError{Message: fmt.Sprintf("Error creating users - %s", err1.Error())})
+		} else {
+			response.WriteHeader(http.StatusCreated)
+			json.NewEncoder(response).Encode(user)
 		}
-		response.WriteHeader(http.StatusCreated)
-		json.NewEncoder(response).Encode(user)
 	}
 }
 
@@ -79,13 +82,15 @@ func (*controller) GetByID(response http.ResponseWriter, request *http.Request) 
 		response.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(response).Encode(servError.ServiceError{Message: err.Error()})
 	}
+
 	user, err1 := userServ.GetByID(id)
 	if err1 != nil {
 		response.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(response).Encode(servError.ServiceError{Message: err1.Error()})
+	} else {
+		response.WriteHeader(http.StatusOK)
+		json.NewEncoder(response).Encode(user)
 	}
-	response.WriteHeader(http.StatusOK)
-	json.NewEncoder(response).Encode(user)
 }
 
 // Delete user
@@ -101,9 +106,10 @@ func (*controller) Delete(response http.ResponseWriter, request *http.Request) {
 	if err1 != nil {
 		response.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(response).Encode(servError.ServiceError{Message: err1.Error()})
+	} else {
+		response.WriteHeader(http.StatusOK)
+		json.NewEncoder(response).Encode(id)
 	}
-	response.WriteHeader(http.StatusOK)
-	json.NewEncoder(response).Encode(id)
 }
 
 // Update user
@@ -128,7 +134,8 @@ func (*controller) Update(response http.ResponseWriter, request *http.Request) {
 	if err2 != nil {
 		response.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(response).Encode(servError.ServiceError{Message: err2.Error()})
+	} else {
+		response.WriteHeader(http.StatusOK)
+		json.NewEncoder(response).Encode(user)
 	}
-	response.WriteHeader(http.StatusOK)
-	json.NewEncoder(response).Encode(user)
 }
