@@ -25,11 +25,10 @@ class Login extends Component {
 		this.state.isAuthenticated = true;
 		this.setState({
 			isAuthenticated: true,
+			userName: this.state.userName,
 		});
-		this.props.history.push("/predict", {
-			responseState: this.state,
-		});
-		this.props.onLogIn(this.state.userName);
+		this.props.history.push("/predict");
+		this.props.onLogIn(this.state.isAuthenticated, this.state.userName);
 	};
 
 	render() {

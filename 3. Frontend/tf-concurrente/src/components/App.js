@@ -26,11 +26,12 @@ class App extends Component {
 	constructor(props) {
 		super(props);
 		this.handleLogIn = this.handleLogIn.bind(this);
-		this.state = { userName: "" };
+		this.state = { userName: "", isAuthenticated: false };
 	}
 
-	handleLogIn(newName) {
+	handleLogIn(newState, newName) {
 		this.setState({
+			isAuthenticated: newState,
 			userName: newName,
 		});
 	}
@@ -39,14 +40,24 @@ class App extends Component {
 		return (
 			<React.Fragment>
 				<Router>
-					<Layout userName={this.state.userName} />
+					<Layout state={this.state} />
 					<Switch>
 						<Route
 							exact
 							path="/login"
 							render={(props) => <Login onLogIn={this.handleLogIn} />}
 						/>
-						<PrivateRoute path="/predict" component={Predict} />
+						<Route
+							exact
+							path="/predict"
+							render={(props) =>
+								this.state.isAuthenticated === true ? (
+									<Predict state={this.state} />
+								) : (
+									<Redirect to="/login" />
+								)
+							}
+						/>
 					</Switch>
 				</Router>
 			</React.Fragment>

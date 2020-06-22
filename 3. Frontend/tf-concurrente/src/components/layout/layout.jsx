@@ -15,12 +15,12 @@ class Layout extends Component {
 					<Navbar.Toggle aria-controls="basic-navbar-nav" />
 					<Navbar.Collapse className="justify-content-end">
 						<Nav className="mr-auto">
-							{this.state.isAuthenticated && (
-								<Nav.Link href="info">Testeo de Arquitecturas</Nav.Link>
+							{this.props.state.isAuthenticated && (
+								<Nav.Link href="predict">Examen de Covid-19</Nav.Link>
 							)}
 						</Nav>
 						<Navbar.Text>
-							Signed in as: <a href="#login">{this.props.userName}</a>
+							Signed in as: <a href="#login">{this.props.state.userName}</a>
 						</Navbar.Text>
 					</Navbar.Collapse>
 				</Navbar>
