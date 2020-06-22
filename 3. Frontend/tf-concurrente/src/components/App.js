@@ -32,7 +32,7 @@ class App extends Component {
 					<Switch>
 						<Route
 							exact
-							path="/login"
+							path="/"
 							render={(props) => <Login onLogIn={this.handleLogIn} />}
 						/>
 						<Route

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Navbar, Nav } from "react-bootstrap";
-
+import "./../styles.css";
 class Layout extends Component {
 	state = {
 		isAuthenticated: false,
@@ -46,11 +46,7 @@ class Layout extends Component {
 										className={menuClass}
 										aria-labelledby="dropdownMenuButton"
 									>
-										<a
-											className="dropdown-item"
-											href="/login"
-											onClick={this.logout}
-										>
+										<a className="dropdown-item" href="/" onClick={this.logout}>
 											Logout
 										</a>
 									</div>
