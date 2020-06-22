@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	con "../config"
+	con "../../config"
 	//connection
 	_ "github.com/lib/pq"
 )

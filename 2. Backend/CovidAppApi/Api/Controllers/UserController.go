@@ -5,16 +5,17 @@ import (
 	"net/http"
 	"strconv"
 
-	model "../entities"
+	interfaces "../../aplication/interfaces"
+	service "../../aplication/services"
+	model "../../domain/entities"
 	servError "../errors"
-	service "../services"
 	"github.com/gorilla/mux"
 )
 
 type controller struct{}
 
 var (
-	userServ service.IUserService = service.UserService()
+	userServ interfaces.IUserService = service.UserService()
 )
 
 // IUserController interface

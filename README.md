@@ -57,12 +57,26 @@ GET
         password: "password"
     }
 
+PUT
+
+    /api/users/{id}
+
+    request body:
+    {
+        username: "username",
+        password: "password"
+    }   
+
 POST
 
-    /api/users
+    /api/users/signup
 
     request body:
     {
         username: "username",
         password: "password"
     }    
+
+DELETE
+
+    /api/users/{id}

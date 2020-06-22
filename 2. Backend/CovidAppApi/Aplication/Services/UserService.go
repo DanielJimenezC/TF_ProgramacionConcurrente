@@ -3,17 +3,18 @@ package services
 import (
 	"errors"
 
-	entity "../entities"
-	model "../entities"
-	userRepository "../repositories"
+	model "../../domain/entities"
+	interfaces "../../domain/interfaces"
+	repository "../../infraestructure/repositories"
+	service "../interfaces"
 )
 
 type serv struct{}
 
-var userRepo userRepository.IUserRepository = userRepository.UserRepository()
+var userRepo interfaces.IUserRepository = repository.UserRepository()
 
 // UserService Implemantation
-func UserService() IUserService {
+func UserService() service.IUserService {
 	return &serv{}
 }
 
@@ -49,7 +50,7 @@ func (*serv) GetAll() ([]model.User, error) {
 	return response, nil
 }
 
-func (*serv) GetByID(id int) (entity.User, error) {
+func (*serv) GetByID(id int) (model.User, error) {
 	response, err := userRepo.GetUser(id)
 	if err != nil {
 		return response, err
@@ -65,7 +66,7 @@ func (*serv) Delete(id int) error {
 	return nil
 }
 
-func (*serv) Update(id int, user entity.User) error {
+func (*serv) Update(id int, user model.User) error {
 	err := userRepo.Update(id, user)
 	if err != nil {
 		return err

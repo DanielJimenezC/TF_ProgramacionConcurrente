@@ -3,15 +3,15 @@ package repositories
 import (
 	"errors"
 
-	entity "../entities"
-	model "../entities"
+	model "../../domain/entities"
+	interfaces "../../domain/interfaces"
 	context "../persistance"
 )
 
 type repo struct{}
 
 // UserRepository Implement
-func UserRepository() IUserRepository {
+func UserRepository() interfaces.IUserRepository {
 	return &repo{}
 }
 
@@ -65,11 +65,11 @@ func (*repo) GetAll() ([]model.User, error) {
 	return users, nil
 }
 
-func (*repo) GetUser(id int) (entity.User, error) {
+func (*repo) GetUser(id int) (model.User, error) {
 	q := `SELECT * FROM public."user" WHERE id = $1`
 	db := context.GetConnection()
 
-	var user entity.User
+	var user model.User
 	row := db.QueryRow(q, id)
 
 	err := row.Scan(&user.ID, &user.Username, &user.Password)
@@ -103,7 +103,7 @@ func (*repo) Delete(id int) error {
 	return nil
 }
 
-func (*repo) Update(id int, user entity.User) error {
+func (*repo) Update(id int, user model.User) error {
 	q := `UPDATE public."user" SET username=$1, password=$2 WHERE id = $3`
 	db := context.GetConnection()
 

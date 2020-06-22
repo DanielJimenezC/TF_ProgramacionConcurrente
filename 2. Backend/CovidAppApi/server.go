@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"net/http"
 
-	router "./Router"
-	controller "./controllers"
+	controller "./api/controllers"
+	router "./config/router"
 )
 
 var (

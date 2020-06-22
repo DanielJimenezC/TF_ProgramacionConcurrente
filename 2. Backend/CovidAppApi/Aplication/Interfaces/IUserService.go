@@ -1,6 +1,6 @@
 package services
 
-import entity "../entities"
+import entity "../../domain/entities"
 
 // IUserService Interface
 type IUserService interface {
