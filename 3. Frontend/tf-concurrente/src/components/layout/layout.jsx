@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Navbar, Nav } from "react-bootstrap";
-import "./../styles.css";
+
 class Layout extends Component {
 	state = {
 		isAuthenticated: false,
