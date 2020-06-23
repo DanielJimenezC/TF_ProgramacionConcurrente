@@ -63,8 +63,51 @@ class Predict extends Component {
 							<div class="form-group">
 								<label for="exampleFormControlSelect1">Distrito</label>
 								<select class="form-control" id="formSelect1">
-									<option>1</option>
-									<option>2</option>
+									<option>Callao</option>
+									<option>Bellavista</option>
+									<option>Carmen de La Legua</option>
+									<option>La Perla</option>
+									<option>La Punta</option>
+									<option>Mi Perú</option>
+									<option>Ventanilla</option>
+									<option>Lima</option>
+									<option>Ancón</option>
+									<option>Ate</option>
+									<option>Barranco</option>
+									<option>Breña</option>
+									<option>Carabayllo</option>
+									<option>Cieneguilla</option>
+									<option>Chaclacayo</option>
+									<option>Chorrillos</option>
+									<option>Comas</option>
+									<option>El Agustino</option>
+									<option>Independencia</option>
+									<option>Jesús María</option>
+									<option>La Molina</option>
+									<option>La Victoria</option>
+									<option>Lince</option>
+									<option>Los Olivos</option>
+									<option>Lurigancho</option>
+									<option>Lurín</option>
+									<option>Magdalena del Mar</option>
+									<option>Miraflores</option>
+									<option>Pachacámac</option>
+									<option>Pucusana</option>
+									<option>Pueblo Libre</option>
+									<option>Puente Piedra</option>
+									<option>Punta Hermosa</option>
+									<option>Punta Negra</option>
+									<option>Rímac</option>
+									<option>San Bartolo</option>
+									<option>San Borja</option>
+									<option>San Isidro</option>
+									<option>San Juan de Lurigancho</option>
+									<option>San Luis</option>
+									<option>San Martín de Porres</option>
+									<option>San Miguel</option>
+									<option>Santiago de Surco</option>
+									<option>Surquillo</option>
+									<option>Villa El Salvador</option>
 								</select>
 							</div>
 						</Col>

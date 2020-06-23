@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import Layout from "./layout/layout";
 import Login from "./login/login";
+import Register from "./register/register";
 import Faq from "./faq/faq";
 
 class App extends Component {
@@ -33,7 +34,12 @@ class App extends Component {
 						<Route
 							exact
 							path="/"
-							render={(props) => <Login onLogIn={this.handleLogIn} />}
+							render={(props) => (
+								<div>
+									<Login onLogIn={this.handleLogIn} />
+									<Register onLogIn={this.handleLogIn} />
+								</div>
+							)}
 						/>
 						<Route
 							exact

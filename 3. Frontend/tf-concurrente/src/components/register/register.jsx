@@ -2,13 +2,15 @@ import React, { Component } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { Row, Col, Grid, InputGroup } from "react-bootstrap";
-import "./login.css";
+import "./register.css";
 import { withRouter } from "react-router-dom";
 
-class Login extends Component {
+class Register extends Component {
 	state = {
 		isAuthenticated: "",
 		userName: "",
+		password: "",
+		confirmPassword: "",
 	};
 
 	handleChange = (event) => {
@@ -40,13 +42,7 @@ class Login extends Component {
 		return (
 			<React.Fragment>
 				<div className="styleForForm">
-					<h5
-						style={{
-							paddingTop: "20px",
-						}}
-					>
-						Login
-					</h5>
+					<h5>Registro</h5>
 				</div>
 				<Form className="styleForForm">
 					<Form.Row className="row">
@@ -65,10 +61,57 @@ class Login extends Component {
 					<Form.Row className="row">
 						<Col>
 							<InputGroup className="mb-2">
-								<Form.Control type="password" placeholder="Password" />
+								<Form.Control
+									type="text"
+									placeholder="Email"
+									name="userName"
+									value={this.state.userName}
+									onChange={this.handleChange}
+								/>
 							</InputGroup>
 						</Col>
 					</Form.Row>
+					<Form.Row className="row">
+						<Col>
+							<InputGroup className="mb-2">
+								<Form.Control
+									type="password"
+									placeholder="Password"
+									name="password"
+									value={this.state.password}
+									onChange={this.handleChange}
+									className={
+										this.state.password == this.state.confirmPassword
+											? ""
+											: "form-control is-invalid"
+									}
+								/>
+							</InputGroup>
+						</Col>
+					</Form.Row>
+					<Form.Row className="row">
+						<Col>
+							<InputGroup className="mb-2">
+								<Form.Control
+									type="password"
+									placeholder="Confirm Password"
+									name="confirmPassword"
+									value={this.state.confirmPassword}
+									onChange={this.handleChange}
+									className={
+										this.state.password == this.state.confirmPassword
+											? ""
+											: "form-control is-invalid"
+									}
+								/>
+							</InputGroup>
+						</Col>
+					</Form.Row>
+					{this.state.password != this.state.confirmPassword && (
+						<div class="alert alert-danger" role="alert">
+							The passwords don't match!
+						</div>
+					)}
 				</Form>
 				<div className="centerdiv">
 					<Button
@@ -76,7 +119,7 @@ class Login extends Component {
 						className="button"
 						onClick={this.submitForm}
 					>
-						Login
+						Register
 					</Button>{" "}
 				</div>
 			</React.Fragment>
@@ -84,4 +127,4 @@ class Login extends Component {
 	}
 }
 
-export default withRouter(Login);
+export default withRouter(Register);
