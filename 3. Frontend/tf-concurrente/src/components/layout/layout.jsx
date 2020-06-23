@@ -19,7 +19,7 @@ class Layout extends Component {
 		return (
 			<React.Fragment>
 				<Navbar bg="light" expand="lg" bg="dark" variant="dark">
-					<Navbar.Brand>Smart Rona</Navbar.Brand>
+					<Navbar.Brand>Covid-19 Tool</Navbar.Brand>
 					<Navbar.Toggle aria-controls="basic-navbar-nav" />
 					<Navbar.Collapse className="justify-content-end">
 						<Nav className="mr-auto">
