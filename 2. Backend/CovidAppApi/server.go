@@ -24,7 +24,8 @@ func main() {
 	httpRouter.GET("/api/users", userController.GetAll)
 	httpRouter.GET("/api/users/{id}", userController.GetByID)
 	httpRouter.PUT("/api/users/{id}", userController.Update)
-	httpRouter.POST("/api/users/signup", userController.Create)
+	httpRouter.POST("/api/users/signup", userController.SignUp)
 	httpRouter.DELETE("/api/users/{id}", userController.Delete)
+	httpRouter.POST("/api/users/login", userController.Login)
 	httpRouter.SERVE(port)
 }

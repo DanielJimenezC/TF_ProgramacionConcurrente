@@ -9,4 +9,5 @@ type IUserRepository interface {
 	GetUser(id int) (entity.User, error)
 	Delete(id int) error
 	Update(id int, user entity.User) error
+	Login(user entity.User) (bool, error)
 }

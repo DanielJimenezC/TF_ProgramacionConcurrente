@@ -6,6 +6,7 @@ import (
 	model "../../domain/entities"
 	interfaces "../../domain/interfaces"
 	repository "../../infraestructure/repositories"
+	userResponse "../communication"
 	service "../interfaces"
 )
 
@@ -42,20 +43,32 @@ func (*serv) Create(user model.User) error {
 	return nil
 }
 
-func (*serv) GetAll() ([]model.User, error) {
+func (*serv) GetAll() ([]userResponse.UserResponse, error) {
 	response, err := userRepo.GetAll()
+	users := make([]userResponse.UserResponse, 0)
+
+	for i := 0; i < len(response); i++ {
+		var user userResponse.UserResponse
+		user.ID = response[i].ID
+		user.Username = response[i].Username
+		users = append(users, user)
+	}
+
 	if err != nil {
 		return nil, err
 	}
-	return response, nil
+	return users, nil
 }
 
-func (*serv) GetByID(id int) (model.User, error) {
+func (*serv) GetByID(id int) (userResponse.UserResponse, error) {
 	response, err := userRepo.GetUser(id)
+	var user userResponse.UserResponse
+	user.ID = response.ID
+	user.Username = response.Username
 	if err != nil {
-		return response, err
+		return user, err
 	}
-	return response, nil
+	return user, nil
 }
 
 func (*serv) Delete(id int) error {
@@ -72,4 +85,12 @@ func (*serv) Update(id int, user model.User) error {
 		return err
 	}
 	return nil
+}
+
+func (*serv) Login(user model.User) (bool, error) {
+	login, _ := userRepo.Login(user)
+	if !login {
+		return false, nil
+	}
+	return true, nil
 }

@@ -2,6 +2,10 @@ package repositories
 
 import (
 	"errors"
+	"os"
+	"strconv"
+
+	"golang.org/x/crypto/bcrypt"
 
 	model "../../domain/entities"
 	interfaces "../../domain/interfaces"
@@ -26,7 +30,8 @@ func (*repo) Create(user model.User) error {
 	}
 	defer stmt.Close()
 
-	r, err := stmt.Exec(user.Username, user.Password)
+	hash, _ := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+	r, err := stmt.Exec(user.Username, string(hash))
 	if err != nil {
 		return err
 	}
@@ -68,10 +73,9 @@ func (*repo) GetAll() ([]model.User, error) {
 func (*repo) GetUser(id int) (model.User, error) {
 	q := `SELECT * FROM public."user" WHERE id = $1`
 	db := context.GetConnection()
-
 	var user model.User
-	row := db.QueryRow(q, id)
 
+	row := db.QueryRow(q, id)
 	err := row.Scan(&user.ID, &user.Username, &user.Password)
 	if err != nil {
 		return user, nil
@@ -125,4 +129,25 @@ func (*repo) Update(id int, user model.User) error {
 	}
 
 	return nil
+}
+
+func (*repo) Login(user model.User) (bool, error) {
+	q := `SELECT * FROM public."user" WHERE username=$1`
+	db := context.GetConnection()
+
+	var loginUser model.User
+	row := db.QueryRow(q, user.Username)
+	var hash []byte
+	err := row.Scan(&loginUser.ID, &loginUser.Username, &loginUser.Password)
+	if err != nil {
+		return false, nil
+	}
+	hash = []byte(loginUser.Password)
+	password := user.Password
+	if err := bcrypt.CompareHashAndPassword(hash, []byte(password)); err != nil {
+		return false, nil
+	}
+
+	os.Setenv("USER_LOGIN", strconv.Itoa(loginUser.ID))
+	return true, nil
 }

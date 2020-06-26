@@ -22,10 +22,11 @@ var (
 // IUserController interface
 type IUserController interface {
 	GetAll(response http.ResponseWriter, request *http.Request)
-	Create(response http.ResponseWriter, request *http.Request)
+	SignUp(response http.ResponseWriter, request *http.Request)
 	GetByID(response http.ResponseWriter, request *http.Request)
 	Update(response http.ResponseWriter, request *http.Request)
 	Delete(response http.ResponseWriter, request *http.Request)
+	Login(response http.ResponseWriter, request *http.Request)
 }
 
 // UserController Implementation
@@ -46,8 +47,8 @@ func (*controller) GetAll(response http.ResponseWriter, request *http.Request) {
 	}
 }
 
-// Create User
-func (*controller) Create(response http.ResponseWriter, request *http.Request) {
+// SignUp User
+func (*controller) SignUp(response http.ResponseWriter, request *http.Request) {
 	response.Header().Set("Content-Type", "application/json")
 	var user model.User
 
@@ -137,5 +138,26 @@ func (*controller) Update(response http.ResponseWriter, request *http.Request) {
 	} else {
 		response.WriteHeader(http.StatusOK)
 		json.NewEncoder(response).Encode(user)
+	}
+}
+
+// Login user
+func (*controller) Login(response http.ResponseWriter, request *http.Request) {
+	response.Header().Set("Content-Type", "application/json")
+	var user model.User
+
+	err := json.NewDecoder(request.Body).Decode(&user)
+	if err != nil {
+		response.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(response).Encode(servError.ServiceError{Message: "Error decode Json users"})
+	}
+
+	login, _ := userServ.Login(user)
+	if !login {
+		response.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(response).Encode(servError.ServiceError{Message: "Invalid Username or Password"})
+	} else {
+		response.WriteHeader(http.StatusOK)
+		json.NewEncoder(response).Encode(servError.ServiceError{Message: "Succesfull Login"})
 	}
 }
