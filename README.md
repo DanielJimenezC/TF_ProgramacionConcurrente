@@ -16,6 +16,10 @@ Install Go Package yaml
 
     got get gopkg.in/yaml.v3
 
+Install Go Package bcrypt
+
+    got get golang.org/x/crypto/bcrypt
+
 #### Build & Run Api
 
 Go to CovidAppApi package then build it.
@@ -26,14 +30,14 @@ Run CovidAppApi.
 
     ./CovidAppApi
 
-If everything is alright, the message "Server is up and running..." will be displayed.
+If everything is alright, the message "Server is up and running..." will be displayed at localhost/5000.
 
 Api is running on localhost:5000
 
 ### API Routes
 
 #### Users
-GET
+GET (Get all users)
 
     /api/users
 
@@ -41,23 +45,21 @@ GET
     [
         {
             id: "id",
-            username: "username",
-            password: "password"
+            username: "username"
         }
     ]
 
-GET
+GET (Get user by Id)
 
     /api/users/{id}
 
     response:
     {
         id: "id",
-        username: "username",
-        password: "password"
+        username: "username"
     }
 
-PUT
+PUT (Update user)
 
     /api/users/{id}
 
@@ -67,7 +69,7 @@ PUT
         password: "password"
     }   
 
-POST
+POST (Signup - Create user)
 
     /api/users/signup
 
@@ -77,6 +79,16 @@ POST
         password: "password"
     }    
 
-DELETE
+POST (User login)
+
+    /api/users/login
+
+    request body:
+    {
+        username: "username",
+        password: "password"
+    }  
+
+DELETE (Delete user by Id)
 
     /api/users/{id}
