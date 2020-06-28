@@ -8,6 +8,7 @@ import (
 
 	interfaces "../../aplication/interfaces"
 	service "../../aplication/services"
+	header "../../config"
 	model "../../domain/entities"
 	servError "../errors"
 	"github.com/gorilla/mux"
@@ -36,7 +37,9 @@ func UserController() IUserController {
 
 // GetAll Users
 func (*controller) GetAll(response http.ResponseWriter, request *http.Request) {
-	response.Header().Set("Content-Type", "application/json")
+	header.AddHeaders(&response)
+	//response.Header().Set("Content-Type", "application/json")
+	//response.Header().Set("Access-Control-Allow-Origin", "*")
 	users, err := userServ.GetAll()
 	if err != nil {
 		response.WriteHeader(http.StatusInternalServerError)
@@ -49,7 +52,7 @@ func (*controller) GetAll(response http.ResponseWriter, request *http.Request) {
 
 // SignUp User
 func (*controller) SignUp(response http.ResponseWriter, request *http.Request) {
-	response.Header().Set("Content-Type", "application/json")
+	header.AddHeaders(&response)
 	var user model.User
 
 	err := json.NewDecoder(request.Body).Decode(&user)
@@ -76,7 +79,7 @@ func (*controller) SignUp(response http.ResponseWriter, request *http.Request) {
 
 // GetbByID User
 func (*controller) GetByID(response http.ResponseWriter, request *http.Request) {
-	response.Header().Set("Content-Type", "application/json")
+	header.AddHeaders(&response)
 	vars := mux.Vars(request)
 	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
@@ -96,7 +99,7 @@ func (*controller) GetByID(response http.ResponseWriter, request *http.Request) 
 
 // Delete user
 func (*controller) Delete(response http.ResponseWriter, request *http.Request) {
-	response.Header().Set("Content-Type", "application/json")
+	header.AddHeaders(&response)
 	vars := mux.Vars(request)
 	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
@@ -115,7 +118,7 @@ func (*controller) Delete(response http.ResponseWriter, request *http.Request) {
 
 // Update user
 func (*controller) Update(response http.ResponseWriter, request *http.Request) {
-	response.Header().Set("Content-Type", "application/json")
+	header.AddHeaders(&response)
 	var user model.User
 
 	err := json.NewDecoder(request.Body).Decode(&user)
@@ -143,7 +146,7 @@ func (*controller) Update(response http.ResponseWriter, request *http.Request) {
 
 // Login user
 func (*controller) Login(response http.ResponseWriter, request *http.Request) {
-	response.Header().Set("Content-Type", "application/json")
+	header.AddHeaders(&response)
 	var user model.User
 
 	err := json.NewDecoder(request.Body).Decode(&user)
