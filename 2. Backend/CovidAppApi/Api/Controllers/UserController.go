@@ -43,7 +43,7 @@ func (*controller) GetAll(response http.ResponseWriter, request *http.Request) {
 	users, err := userServ.GetAll()
 	if err != nil {
 		response.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(response).Encode(servError.ServiceError{Message: "Error getting the users"})
+		json.NewEncoder(response).Encode(servError.ServiceError{Message: err.Error()})
 	} else {
 		response.WriteHeader(http.StatusOK)
 		json.NewEncoder(response).Encode(users)
@@ -53,6 +53,9 @@ func (*controller) GetAll(response http.ResponseWriter, request *http.Request) {
 // SignUp User
 func (*controller) SignUp(response http.ResponseWriter, request *http.Request) {
 	header.AddHeaders(&response)
+	if (*request).Method == "OPTIONS" {
+		response.WriteHeader(http.StatusCreated)
+	}
 	var user model.User
 
 	err := json.NewDecoder(request.Body).Decode(&user)
@@ -100,6 +103,9 @@ func (*controller) GetByID(response http.ResponseWriter, request *http.Request) 
 // Delete user
 func (*controller) Delete(response http.ResponseWriter, request *http.Request) {
 	header.AddHeaders(&response)
+	if (*request).Method == "OPTIONS" {
+		response.WriteHeader(http.StatusOK)
+	}
 	vars := mux.Vars(request)
 	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
@@ -119,6 +125,9 @@ func (*controller) Delete(response http.ResponseWriter, request *http.Request) {
 // Update user
 func (*controller) Update(response http.ResponseWriter, request *http.Request) {
 	header.AddHeaders(&response)
+	if (*request).Method == "OPTIONS" {
+		response.WriteHeader(http.StatusOK)
+	}
 	var user model.User
 
 	err := json.NewDecoder(request.Body).Decode(&user)
@@ -147,6 +156,9 @@ func (*controller) Update(response http.ResponseWriter, request *http.Request) {
 // Login user
 func (*controller) Login(response http.ResponseWriter, request *http.Request) {
 	header.AddHeaders(&response)
+	if (*request).Method == "OPTIONS" {
+		response.WriteHeader(http.StatusOK)
+	}
 	var user model.User
 
 	err := json.NewDecoder(request.Body).Decode(&user)

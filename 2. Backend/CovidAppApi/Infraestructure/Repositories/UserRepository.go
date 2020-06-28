@@ -73,6 +73,7 @@ func (*repo) GetAll() ([]model.User, error) {
 func (*repo) GetUser(id int) (model.User, error) {
 	q := `SELECT * FROM public."user" WHERE id = $1`
 	db := context.GetConnection()
+	defer db.Close()
 	var user model.User
 
 	row := db.QueryRow(q, id)
@@ -86,6 +87,7 @@ func (*repo) GetUser(id int) (model.User, error) {
 func (*repo) Delete(id int) error {
 	q := `DELETE FROM public."user" WHERE id = $1`
 	db := context.GetConnection()
+	defer db.Close()
 
 	stmt, err := db.Prepare(q)
 	if err != nil {
@@ -110,22 +112,34 @@ func (*repo) Delete(id int) error {
 func (*repo) Update(id int, user model.User) error {
 	q := `UPDATE public."user" SET username=$1, password=$2 WHERE id = $3`
 	db := context.GetConnection()
+	defer db.Close()
 
 	stmt, err := db.Prepare(q)
 	if err != nil {
 		return err
 	}
 	defer stmt.Close()
+	if user.Password != "" {
+		hash, _ := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+		r, err := stmt.Exec(user.Username, string(hash), id)
+		if err != nil {
+			return err
+		}
+		i, _ := r.RowsAffected()
 
-	r, err := stmt.Exec(user.Username, user.Password, id)
-	if err != nil {
-		return err
-	}
+		if i != 1 {
+			return errors.New("Error: Se esperaba 1 fila afectada")
+		}
+	} else {
+		r, err := stmt.Exec(user.Username, user.Password, id)
+		if err != nil {
+			return err
+		}
+		i, _ := r.RowsAffected()
 
-	i, _ := r.RowsAffected()
-
-	if i != 1 {
-		return errors.New("Error: Se esperaba 1 fila afectada")
+		if i != 1 {
+			return errors.New("Error: Se esperaba 1 fila afectada")
+		}
 	}
 
 	return nil
@@ -134,6 +148,7 @@ func (*repo) Update(id int, user model.User) error {
 func (*repo) Login(user model.User) (bool, error) {
 	q := `SELECT * FROM public."user" WHERE username=$1`
 	db := context.GetConnection()
+	defer db.Close()
 
 	var loginUser model.User
 	row := db.QueryRow(q, user.Username)
