@@ -19,12 +19,18 @@ class Layout extends Component {
 		return (
 			<React.Fragment>
 				<Navbar bg="light" expand="lg" bg="dark" variant="dark">
-					<Navbar.Brand>Covid-19 Tool</Navbar.Brand>
+					<Navbar.Brand href="/dashboard">Covid-19 Tool</Navbar.Brand>
 					<Navbar.Toggle aria-controls="basic-navbar-nav" />
 					<Navbar.Collapse className="justify-content-end">
 						<Nav className="mr-auto">
 							{Boolean(localStorage.getItem("auth")) && (
 								<Nav.Link href="predict">Examen de Covid-19</Nav.Link>
+							)}
+							{Boolean(localStorage.getItem("auth")) && (
+								<Nav.Link href="register">Registrar Datos</Nav.Link>
+							)}
+							{Boolean(localStorage.getItem("auth")) && (
+								<Nav.Link href="groups">Grupos de Riesgo</Nav.Link>
 							)}
 							{Boolean(localStorage.getItem("auth")) && (
 								<Nav.Link href="faq">Preguntas Frecuentes</Nav.Link>

@@ -11,6 +11,8 @@ import Login from "./login/login";
 import Register from "./register/register";
 import Faq from "./faq/faq";
 import Dashboard from "./dashboard/dashboard";
+import RegisterData from "./registerdata/registerdata";
+import Groups from "./groups/groups";
 
 class App extends Component {
 	constructor(props) {
@@ -49,7 +51,7 @@ class App extends Component {
 								Boolean(localStorage.getItem("auth")) === true ? (
 									<Predict state={this.state} />
 								) : (
-									<Redirect to="/login" />
+									<Redirect to="/" />
 								)
 							}
 						/>
@@ -60,7 +62,7 @@ class App extends Component {
 								Boolean(localStorage.getItem("auth")) === true ? (
 									<Faq state={this.state} />
 								) : (
-									<Redirect to="/login" />
+									<Redirect to="/" />
 								)
 							}
 						/>
@@ -71,7 +73,29 @@ class App extends Component {
 								Boolean(localStorage.getItem("auth")) === true ? (
 									<Dashboard state={this.state} />
 								) : (
-									<Redirect to="/login" />
+									<Redirect to="/" />
+								)
+							}
+						/>
+						<Route
+							exact
+							path="/groups"
+							render={(props) =>
+								Boolean(localStorage.getItem("auth")) === true ? (
+									<RegisterData state={this.state} />
+								) : (
+									<Redirect to="/" />
+								)
+							}
+						/>
+						<Route
+							exact
+							path="/register"
+							render={(props) =>
+								Boolean(localStorage.getItem("auth")) === true ? (
+									<Groups state={this.state} />
+								) : (
+									<Redirect to="/" />
 								)
 							}
 						/>
