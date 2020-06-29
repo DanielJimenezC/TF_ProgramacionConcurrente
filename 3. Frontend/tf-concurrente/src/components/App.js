@@ -10,6 +10,7 @@ import Layout from "./layout/layout";
 import Login from "./login/login";
 import Register from "./register/register";
 import Faq from "./faq/faq";
+import Dashboard from "./dashboard/dashboard";
 
 class App extends Component {
 	constructor(props) {
@@ -58,6 +59,17 @@ class App extends Component {
 							render={(props) =>
 								Boolean(localStorage.getItem("auth")) === true ? (
 									<Faq state={this.state} />
+								) : (
+									<Redirect to="/login" />
+								)
+							}
+						/>
+						<Route
+							exact
+							path="/dashboard"
+							render={(props) =>
+								Boolean(localStorage.getItem("auth")) === true ? (
+									<Dashboard state={this.state} />
 								) : (
 									<Redirect to="/login" />
 								)

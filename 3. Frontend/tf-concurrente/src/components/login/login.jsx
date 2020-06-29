@@ -2,13 +2,17 @@ import React, { Component } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { Row, Col, Grid, InputGroup } from "react-bootstrap";
+import Modal from "react-bootstrap/Modal";
 import "./login.css";
 import { withRouter } from "react-router-dom";
+import axios from "axios";
 
 class Login extends Component {
 	state = {
 		isAuthenticated: "",
-		userName: "",
+		username: "",
+		password: "",
+		valueOfModal: false,
 	};
 
 	handleChange = (event) => {
@@ -22,18 +26,50 @@ class Login extends Component {
 	};
 
 	submitForm = () => {
+		/*
 		localStorage.setItem("auth", true);
-		localStorage.setItem("username", this.state.userName);
+		localStorage.setItem("username", this.state.username);
 		this.setState(
 			{
 				isAuthenticated: true,
-				userName: this.state.userName,
+				username: this.state.username,
 			},
 			() => {
-				this.props.onLogIn(this.state.isAuthenticated, this.state.userName);
+				this.props.onLogIn(this.state.isAuthenticated, this.state.username);
 				this.props.history.push("/predict");
 			}
 		);
+		*/
+		axios
+			.post("http://localhost:8080/login", this.state)
+			.then((resonse) => {
+				console.log(resonse);
+				if (resonse.data == "Sucess") {
+					console.log("EXITOO");
+					localStorage.setItem("auth", true);
+					localStorage.setItem("username", this.state.username);
+					this.setState(
+						{
+							isAuthenticated: true,
+							username: this.state.username,
+						},
+						() => {
+							this.props.onLogIn(
+								this.state.isAuthenticated,
+								this.state.username
+							);
+							this.props.history.push("/dashboard");
+						}
+					);
+				} else {
+					this.setState({
+						valueOfModal: true,
+					});
+				}
+			})
+			.catch((error) => {
+				console.log(error);
+			});
 	};
 
 	render() {
@@ -55,8 +91,8 @@ class Login extends Component {
 								<Form.Control
 									type="text"
 									placeholder="Username"
-									name="userName"
-									value={this.state.userName}
+									name="username"
+									value={this.state.username}
 									onChange={this.handleChange}
 								/>
 							</InputGroup>
@@ -65,7 +101,13 @@ class Login extends Component {
 					<Form.Row className="row">
 						<Col>
 							<InputGroup className="mb-2">
-								<Form.Control type="password" placeholder="Password" />
+								<Form.Control
+									type="password"
+									placeholder="Password"
+									name="password"
+									value={this.state.password}
+									onChange={this.handleChange}
+								/>
 							</InputGroup>
 						</Col>
 					</Form.Row>
@@ -79,6 +121,27 @@ class Login extends Component {
 						Login
 					</Button>{" "}
 				</div>
+				<Modal
+					size="lg"
+					aria-labelledby="contained-modal-title-vcenter"
+					centered
+					show={this.state.valueOfModal}
+					onHide={() => this.setState({ valueOfModal: false })}
+				>
+					<Modal.Header closeButton>
+						<Modal.Title id="contained-modal-title-vcenter">
+							Modal heading
+						</Modal.Title>
+					</Modal.Header>
+					<Modal.Body>
+						<h4>Centered Modal</h4>
+						<p>
+							Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
+							dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
+							ac consectetur ac, vestibulum at eros.
+						</p>
+					</Modal.Body>
+				</Modal>
 			</React.Fragment>
 		);
 	}
