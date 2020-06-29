@@ -41,10 +41,10 @@ class Login extends Component {
 		);
 		*/
 		axios
-			.post("http://localhost:8080/login", this.state)
+			.post("http://localhost:5000/api/users/login", this.state)
 			.then((resonse) => {
-				console.log(resonse);
-				if (resonse.data == "Sucess") {
+				console.log(resonse.data);
+				if (resonse.data.message == "Succesfull Login") {
 					console.log("EXITOO");
 					localStorage.setItem("auth", true);
 					localStorage.setItem("username", this.state.username);
