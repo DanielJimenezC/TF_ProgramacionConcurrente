@@ -1,0 +1,13 @@
+.styleForForm {
+	padding: 5px;
+}
+.centerdiv {
+	padding: 15px;
+	text-align: center;
+}
+
+.button {
+	display: inline-block;
+	width: 100px;
+	height: 40px;
+}
