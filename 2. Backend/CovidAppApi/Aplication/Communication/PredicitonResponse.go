@@ -1,6 +1,6 @@
 package communication
 
 // Prediction Model
-type Prediction struct {
+type PredictionResponse struct {
 	Enfermo bool `json:"enfermo,omitempty"`
 }

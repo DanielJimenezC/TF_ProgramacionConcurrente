@@ -2,12 +2,12 @@ package entities
 
 // Prediction Model
 type Prediction struct {
-	Edad               int     `json:"edad,omitempty"`
-	Peso               float64 `json:"peso,omitempty"`
-	Distrito           int     `json:"distrito,omitempty"`
-	Tos                int     `json:"tos,omitempty"`
-	Fiebre             int     `json:"fiebre,omitempty"`
-	DificultadRespirar int     `json:"dificultadRespirar,omitempty"`
-	PerdidaOlfato      int     `json:"perdidaOlfato,omitempty"`
-	Enfermo            int     `json:"enfermo,omitempty"`
+	Edad               string `json:"edad,omitempty"`
+	Peso               string `json:"peso,omitempty"`
+	Distrito           string `json:"distrito,omitempty"`
+	Tos                string `json:"tos,omitempty"`
+	Fiebre             string `json:"fiebre,omitempty"`
+	DificultadRespirar string `json:"dificultadRespirar,omitempty"`
+	PerdidaOlfato      string `json:"perdidaOlfato,omitempty"`
+	Enfermo            string `json:"enfermo,omitempty"`
 }

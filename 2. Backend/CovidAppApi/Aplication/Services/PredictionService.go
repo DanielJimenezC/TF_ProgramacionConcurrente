@@ -22,7 +22,19 @@ type distances struct {
 	sick     int
 }
 
-var arrayOfData = make([]model.Prediction, 0, 1000)
+// Prediction Model
+type PredictionNonJson struct {
+	Edad               int     `json:"edad,omitempty"`
+	Peso               float64 `json:"peso,omitempty"`
+	Distrito           int     `json:"distrito,omitempty"`
+	Tos                int     `json:"tos,omitempty"`
+	Fiebre             int     `json:"fiebre,omitempty"`
+	DificultadRespirar int     `json:"dificultadRespirar,omitempty"`
+	PerdidaOlfato      int     `json:"perdidaOlfato,omitempty"`
+	Enfermo            int     `json:"enfermo,omitempty"`
+}
+
+var arrayOfData = make([]PredictionNonJson, 0, 1000)
 
 // PredictionService Implemantation
 func PredictionService() service.IPredictionService {
@@ -30,7 +42,19 @@ func PredictionService() service.IPredictionService {
 }
 
 func (*predict) Predict(prediction model.Prediction) (bool, error) {
-	dataBuffer := make(chan model.Prediction, 1000)
+
+	edad, _ := strconv.Atoi(prediction.Edad)
+	peso, _ := strconv.ParseFloat(prediction.Peso, 8)
+	distrito, _ := strconv.Atoi(prediction.Distrito)
+	tos, _ := strconv.Atoi(prediction.Tos)
+	fiebre, _ := strconv.Atoi(prediction.Fiebre)
+	dificultadRespirar, _ := strconv.Atoi(prediction.DificultadRespirar)
+	perdidaOlfato, _ := strconv.Atoi(prediction.PerdidaOlfato)
+	enfermo, _ := strconv.Atoi(prediction.Enfermo)
+
+	predictionNonJson := PredictionNonJson{edad, peso, distrito, tos, fiebre, dificultadRespirar, perdidaOlfato, enfermo}
+
+	dataBuffer := make(chan PredictionNonJson, 1000)
 	csvfile, err := os.Open("covidPeruDataSet.csv")
 	if err != nil {
 		log.Fatalln("No se pudo abrir el archivo", err)
@@ -50,9 +74,7 @@ func (*predict) Predict(prediction model.Prediction) (bool, error) {
 	for i := 0; i < 1000; i++ {
 		arrayOfData = append(arrayOfData, <-dataBuffer)
 	}
-	fmt.Println("Antes")
-	result := predictGo(prediction)
-	fmt.Println("Despues")
+	result := predictGo(predictionNonJson)
 	isSick := true
 	if result == 1 {
 		isSick = true
@@ -63,7 +85,7 @@ func (*predict) Predict(prediction model.Prediction) (bool, error) {
 	return isSick, nil
 }
 
-func load(noCommasRow []string, dataBuffer chan model.Prediction) {
+func load(noCommasRow []string, dataBuffer chan PredictionNonJson) {
 	edad, _ := strconv.Atoi(noCommasRow[0])
 	peso, _ := strconv.ParseFloat(noCommasRow[1], 2)
 	tos, _ := strconv.Atoi(noCommasRow[3])
@@ -126,48 +148,46 @@ func load(noCommasRow []string, dataBuffer chan model.Prediction) {
 	default:
 		distrito = 0
 	}
-	data := model.Prediction{edad, peso, distrito, tos, fiebre, dificultadRespirar, perdidaOlfato, enfermo}
+	data := PredictionNonJson{edad, peso, distrito, tos, fiebre, dificultadRespirar, perdidaOlfato, enfermo}
 	dataBuffer <- data
 }
 
-func predictGo(prediction model.Prediction) int {
+func predictGo(prediction PredictionNonJson) int {
 	distArray := getAllDistances(prediction)
-	minDists := findClosestGroups(distArray, 5)
-	fmt.Println(minDists)
-	score := make([]int, 6, 6)
+	minDists := findClosestGroups(distArray, 50)
+	score := make([]int, 2, 2)
 	for i := 0; i < len(score); i++ {
 		score[i] = 0
 	}
-	fmt.Println(score)
 	for i := 0; i < len(minDists); i++ {
 		score[minDists[i].sick] = score[minDists[i].sick] + 1
 	}
-	fmt.Println(score)
 	quality := 1
-	maxi := score[1]
-	for i := 1; i < len(score); i++ {
+	maxi := score[0]
+	for i := 0; i < len(score); i++ {
 		if score[i] >= maxi {
 			maxi = score[i]
 			quality = i
 		}
 	}
+	fmt.Println(score)
+	fmt.Println(quality)
 	return quality
 }
 
-func getAllDistances(predict model.Prediction) []distances {
+func getAllDistances(predict PredictionNonJson) []distances {
 	distArray := make([]distances, 0, len(arrayOfData))
 	distanceBuffer := make(chan distances)
 	for i := 0; i < len(arrayOfData); i++ {
 		go calculateDistance(predict, arrayOfData[i], distanceBuffer)
 	}
 	for i := 0; i < len(arrayOfData); i++ {
-		fmt.Println(i)
 		distArray = append(distArray, <-distanceBuffer)
 	}
 	return distArray
 }
 
-func calculateDistance(predict model.Prediction, train model.Prediction, distanceBuffer chan distances) {
+func calculateDistance(predict PredictionNonJson, train PredictionNonJson, distanceBuffer chan distances) {
 	result1 := math.Pow((float64(predict.Edad) - float64(train.Edad)), 2)
 	result2 := math.Pow((predict.Peso - train.Peso), 2)
 	result3 := math.Pow((float64(predict.Distrito) - float64(train.Distrito)), 2)

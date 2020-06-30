@@ -84,12 +84,13 @@ for i in range(1000):
     for i in range(cont):
         chances.append(0)
 
-    sick = random.randint(0, len(chances)-1)
+    sickIndex = random.randint(0, len(chances)-1)
+    sick = chances[sickIndex]
     row.append(sick)
     rows.append(row)
 
 with open('covidPeruDataSet.csv', 'w', newline='') as csvfile:
-    writer = csv.writer(csvfile, delimiter=',', quoting=csv.QUOTE_MINIMAL)
+    writer = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
     writer.writerow(
         ["edad", "peso", "distrito", "tos", "fiebre", "respirar", "gusto", "enfermo"])
     for line in rows:

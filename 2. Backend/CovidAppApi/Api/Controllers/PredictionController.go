@@ -2,7 +2,9 @@ package controllers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"strconv"
 
 	interfaces "../../aplication/interfaces"
 	service "../../aplication/services"
@@ -27,12 +29,13 @@ func PredictionController() IPredictionController {
 	return &predictcontroller{}
 }
 
-// Login user
+// Predict if sick
 func (*predictcontroller) Predict(response http.ResponseWriter, request *http.Request) {
 	header.AddHeaders(&response)
 	var predict model.Prediction
 
 	err := json.NewDecoder(request.Body).Decode(&predict)
+	fmt.Println(predict)
 	if err != nil {
 		response.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(response).Encode(servError.ServiceError{Message: "Error decode Json users"})
@@ -44,6 +47,6 @@ func (*predictcontroller) Predict(response http.ResponseWriter, request *http.Re
 		json.NewEncoder(response).Encode(servError.ServiceError{Message: err.Error()})
 	} else {
 		response.WriteHeader(http.StatusOK)
-		json.NewEncoder(response).Encode(result)
+		json.NewEncoder(response).Encode(strconv.FormatBool(result))
 	}
 }
