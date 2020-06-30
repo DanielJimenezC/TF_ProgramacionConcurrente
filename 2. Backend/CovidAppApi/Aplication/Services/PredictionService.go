@@ -2,7 +2,6 @@ package services
 
 import (
 	"encoding/csv"
-	"fmt"
 	"io"
 	"log"
 	"math"
@@ -22,7 +21,6 @@ type distances struct {
 	sick     int
 }
 
-// Prediction Model
 type PredictionNonJson struct {
 	Edad               int     `json:"edad,omitempty"`
 	Peso               float64 `json:"peso,omitempty"`
@@ -41,8 +39,16 @@ func PredictionService() service.IPredictionService {
 	return &predict{}
 }
 
-func (*predict) Predict(prediction model.Prediction) (bool, error) {
+func round(num float64) int {
+	return int(num + math.Copysign(0.5, num))
+}
 
+func toFixed(num float64, precision int) float64 {
+	output := math.Pow(10, float64(precision))
+	return float64(round(num*output)) / output
+}
+
+func (*predict) Predict(prediction model.Prediction) (bool, float64, error) {
 	edad, _ := strconv.Atoi(prediction.Edad)
 	peso, _ := strconv.ParseFloat(prediction.Peso, 8)
 	distrito, _ := strconv.Atoi(prediction.Distrito)
@@ -74,7 +80,8 @@ func (*predict) Predict(prediction model.Prediction) (bool, error) {
 	for i := 0; i < 1000; i++ {
 		arrayOfData = append(arrayOfData, <-dataBuffer)
 	}
-	result := predictGo(predictionNonJson)
+	result, chance := predictGo(predictionNonJson)
+	chance = toFixed(chance, 2)
 	isSick := true
 	if result == 1 {
 		isSick = true
@@ -82,7 +89,7 @@ func (*predict) Predict(prediction model.Prediction) (bool, error) {
 		isSick = false
 	}
 
-	return isSick, nil
+	return isSick, chance, nil
 }
 
 func load(noCommasRow []string, dataBuffer chan PredictionNonJson) {
@@ -152,7 +159,7 @@ func load(noCommasRow []string, dataBuffer chan PredictionNonJson) {
 	dataBuffer <- data
 }
 
-func predictGo(prediction PredictionNonJson) int {
+func predictGo(prediction PredictionNonJson) (int, float64) {
 	distArray := getAllDistances(prediction)
 	minDists := findClosestGroups(distArray, 50)
 	score := make([]int, 2, 2)
@@ -170,9 +177,8 @@ func predictGo(prediction PredictionNonJson) int {
 			quality = i
 		}
 	}
-	fmt.Println(score)
-	fmt.Println(quality)
-	return quality
+	chance := float64(maxi) / 50 * 100
+	return quality, chance
 }
 
 func getAllDistances(predict PredictionNonJson) []distances {

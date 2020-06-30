@@ -8,8 +8,8 @@
 
 .button {
 	display: inline-block;
-	width: 100px;
-	height: 40px;
+	width: 200px;
+	height: 400px;
 }
 
 .text {
@@ -25,17 +25,4 @@
 .centerdiv {
 	padding: 15px;
 	text-align: center;
-}
-
-.textdiff {
-	padding-top: 20px;
-	text-align: center;
-	margin: auto;
-}
-.textResponse {
-	padding-top: 15px;
-	text-align: center;
-	margin: auto;
-	font-weight: bold;
-	color: lightcoral;
 }

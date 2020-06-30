@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strconv"
 
+	responses "../../aplication/communication"
 	interfaces "../../aplication/interfaces"
 	service "../../aplication/services"
 	header "../../config"
@@ -42,12 +43,15 @@ func (*predictcontroller) Predict(response http.ResponseWriter, request *http.Re
 		json.NewEncoder(response).Encode(servError.ServiceError{Message: "Error decode Json users"})
 	}
 
-	result, _ := predictServ.Predict(predict)
+	result, chance, _ := predictServ.Predict(predict)
+	var resultResponse responses.PredictionResponse
+	resultResponse.Chance = chance
+	resultResponse.Enfermo = strconv.FormatBool(result)
 	if err != nil {
 		response.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(response).Encode(servError.ServiceError{Message: err.Error()})
 	} else {
 		response.WriteHeader(http.StatusOK)
-		json.NewEncoder(response).Encode(strconv.FormatBool(result))
+		json.NewEncoder(response).Encode(resultResponse)
 	}
 }
