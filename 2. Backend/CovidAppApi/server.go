@@ -9,8 +9,9 @@ import (
 )
 
 var (
-	httpRouter     router.Router              = router.MuxRouter()
-	userController controller.IUserController = controller.UserController()
+	httpRouter        router.Router                    = router.MuxRouter()
+	userController    controller.IUserController       = controller.UserController()
+	predictController controller.IPredictionController = controller.PredictionController()
 )
 
 func main() {
@@ -25,6 +26,7 @@ func main() {
 	httpRouter.GET("/api/users/{id}", userController.GetByID)
 	httpRouter.PUT("/api/users/{id}", userController.Update)
 	httpRouter.POST("/api/users/signup", userController.SignUp)
+	httpRouter.POST("/api/prediction", predictController.Predict)
 	httpRouter.DELETE("/api/users/{id}", userController.Delete)
 	httpRouter.POST("/api/users/login", userController.Login)
 	httpRouter.SERVE(port)
