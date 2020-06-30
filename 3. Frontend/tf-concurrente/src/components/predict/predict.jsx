@@ -4,12 +4,21 @@ import Button from "react-bootstrap/Button";
 import { Row, Col, Grid, InputGroup } from "react-bootstrap";
 import "./predict.css";
 import { withRouter } from "react-router-dom";
+import axios from "axios";
 
 class Predict extends Component {
 	state = {
 		id: 1300,
-		peso: "",
 		isAuthenticated: false,
+		edad: "",
+		peso: "",
+		distrito: "3",
+		tos: "0",
+		fiebre: "0",
+		dificultadRespira: "0",
+		perdidaOlfato: "0",
+		enfermo: "",
+		responsePOST: "None",
 	};
 
 	handleChange = (event) => {
@@ -23,7 +32,20 @@ class Predict extends Component {
 	};
 
 	submitForm = () => {
-		localStorage.clear();
+		axios
+			.post("http://localhost:5000/api/users/prediction", this.state)
+			.then((resonse) => {
+				console.log(resonse);
+				this.setState({ responsePOST: resonse.data });
+				if (this.state.responsePOST == "true") {
+					this.setState({ enfermo: "Enferma" });
+				} else {
+					this.setState({ enfermo: "No enferma" });
+				}
+			})
+			.catch((error) => {
+				console.log(error);
+			});
 	};
 
 	render() {
@@ -33,12 +55,12 @@ class Predict extends Component {
 					<h5 className="text">Datos Personales</h5>
 					<Form.Row className="row">
 						<Col>
-							<Form.Label>Fecha de Nacimiento</Form.Label>
+							<Form.Label>Edad</Form.Label>
 							<InputGroup className="mb-2">
 								<Form.Control
 									type="text"
-									name="peso"
-									value={this.state.peso}
+									name="edad"
+									value={this.state.edad}
 									onChange={this.handleChange}
 								/>
 							</InputGroup>
@@ -67,10 +89,9 @@ class Predict extends Component {
 									<option>Ventanilla</option>
 									<option>Ate</option>
 									<option>Barranco</option>
-									<option>Breña</option>
 									<option>Chorrillos</option>
 									<option>Comas</option>
-									<option>Jesús Maria</option>
+									<option>Jesus Maria</option>
 									<option>La Molina</option>
 									<option>La Victoria</option>
 									<option>Lince</option>
@@ -153,6 +174,8 @@ class Predict extends Component {
 					>
 						Enviar
 					</Button>
+					<h6 className="textdiff">La persona esta:</h6>
+					<span className="textResponse">{this.state.enfermo}</span>
 				</div>
 			</React.Fragment>
 		);
