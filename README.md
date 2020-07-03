@@ -1,7 +1,7 @@
 # CovidApp
 Developers:
-- [Daniel Jimenez](#https://github.com/DanielJimenezC)
-- [Luis Kcomt](#https://github.com/kcomt)
+- [Daniel Jimenez](https://github.com/DanielJimenezC)
+- [Luis Kcomt](https://github.com/kcomt)
 
 
 # Index
