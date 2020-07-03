@@ -4,7 +4,7 @@ Developers:
 - Luis Kcomt
 
 
-# Indice
+# Index
 1. [Project Description](#Project%20Description)
 2. [PreRequisites](#PreRequisites)
 3. [BackEnd](#Backend)
