@@ -12,6 +12,7 @@ var (
 	httpRouter        router.Router                    = router.MuxRouter()
 	userController    controller.IUserController       = controller.UserController()
 	predictController controller.IPredictionController = controller.PredictionController()
+	groupsController  controller.IGroupsController     = controller.GroupsController()
 )
 
 func main() {
@@ -24,6 +25,7 @@ func main() {
 
 	httpRouter.GET("/api/users", userController.GetAll)
 	httpRouter.GET("/api/users/{id}", userController.GetByID)
+	httpRouter.GET("/api/groups", groupsController.GetGroups)
 	httpRouter.PUT("/api/users/{id}", userController.Update)
 	httpRouter.POST("/api/users/signup", userController.SignUp)
 	httpRouter.POST("/api/users/prediction", predictController.Predict)

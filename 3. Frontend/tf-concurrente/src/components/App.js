@@ -79,7 +79,7 @@ class App extends Component {
 						/>
 						<Route
 							exact
-							path="/groups"
+							path="/register"
 							render={(props) =>
 								Boolean(localStorage.getItem("auth")) === true ? (
 									<RegisterData state={this.state} />
@@ -90,7 +90,7 @@ class App extends Component {
 						/>
 						<Route
 							exact
-							path="/register"
+							path="/groups"
 							render={(props) =>
 								Boolean(localStorage.getItem("auth")) === true ? (
 									<Groups state={this.state} />
