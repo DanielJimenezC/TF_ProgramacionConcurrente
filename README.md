@@ -1,7 +1,7 @@
 # CovidApp
 Developers:
-- Daniel Jimenez
-- Luis Kcomt
+- [Daniel Jimenez](#https://github.com/DanielJimenezC)
+- [Luis Kcomt](#https://github.com/kcomt)
 
 
 # Index
@@ -34,27 +34,27 @@ Developers:
 &nbsp;
 
 ## API PreRequisites
-___
-*Install Go Package pq.*
+
+Install Go Package pq.
 
     go get github.com/lib/pq
 
-*Install Go Package mux.*
+Install Go Package mux.
 
     go get github.com/gorilla/mux
 
-*Install Go Package yaml.*
+Install Go Package yaml.
 
     got get gopkg.in/yaml.v3
 
-*Install Go Package bcrypt.*
+Install Go Package bcrypt.
 
     got get golang.org/x/crypto/bcrypt
 
 &nbsp;
 
 ## Build & Run Api
-___
+
 Go to CovidAppApi package then build it.
 
     go build
@@ -70,7 +70,7 @@ If everything is alright, the message "Server is up and running..." will be disp
 &nbsp;
 
 ## API Routes
-___
+
 ### USERS
 
 **GET** *(Get all users)* <a name="GET"></a>
@@ -171,11 +171,11 @@ ___
 &nbsp;
 
 ## FrontEnd PreRequisites
-___
+
 &nbsp;
 
 ## Run Web Application
-___
+
 &nbsp;
 
 # Bibliography
