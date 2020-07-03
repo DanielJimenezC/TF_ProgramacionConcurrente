@@ -6,6 +6,7 @@ import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 import Container from "react-bootstrap/Container";
 import { Row, Col, Grid, InputGroup } from "react-bootstrap";
 import "./groups.css";
+import Alert from "react-bootstrap/Alert";
 
 class Groups extends Component {
 	state = {
@@ -20,14 +21,29 @@ class Groups extends Component {
 			{
 				headerName: "Edad",
 				field: "edad",
+				width: 80,
 			},
 			{
 				headerName: "Peso",
 				field: "peso",
+				width: 80,
 			},
 			{
 				headerName: "Distrito",
 				field: "distrito",
+				width: 150,
+			},
+			{
+				headerName: "Dif. al Respirar",
+				field: "dificultadRespirar",
+
+				width: 140,
+			},
+			{
+				headerName: "Prd. de Olfato",
+				field: "perdidaOlfato",
+
+				width: 140,
 			},
 		],
 	};
@@ -37,60 +53,25 @@ class Groups extends Component {
 			.get("http://localhost:5000/api/groups")
 			.then((resonse) => {
 				console.log(resonse.data.clusters.Clusters[0]);
-				this.setState(
-					{
-						clusters: resonse.data.clusters.Clusters,
-						group1: resonse.data.clusters.Clusters[0],
-						group2: resonse.data.clusters.Clusters[1],
-						group3: resonse.data.clusters.Clusters[2],
-						group4: resonse.data.clusters.Clusters[3],
-					},
-					() => {
-						this.autoSizeAll(true);
-					}
-				);
+				this.setState({
+					clusters: resonse.data.clusters.Clusters,
+					group1: resonse.data.clusters.Clusters[0],
+					group2: resonse.data.clusters.Clusters[1],
+					group3: resonse.data.clusters.Clusters[2],
+					group4: resonse.data.clusters.Clusters[3],
+				});
 			})
 			.catch((error) => {
 				console.log(error);
 			});
 	}
 
-	onGridReady = (params) => {
-		this.gridApi = params.api;
-		this.gridColumnApi = params.columnApi;
-
-		const httpRequest = new XMLHttpRequest();
-		const updateData = (data) => {
-			this.setState({ rowData: data });
-		};
-
-		httpRequest.open(
-			"GET",
-			"https://raw.githubusercontent.com/ag-grid/ag-grid/master/grid-packages/ag-grid-docs/src/olympicWinnersSmall.json"
-		);
-		httpRequest.send();
-		httpRequest.onreadystatechange = () => {
-			if (httpRequest.readyState === 4 && httpRequest.status === 200) {
-				updateData(JSON.parse(httpRequest.responseText));
-			}
-		};
-	};
-
-	sizeToFit = () => {
-		this.gridApi.sizeColumnsToFit();
-	};
-
-	autoSizeAll = (skipHeader) => {
-		var allColumnIds = [];
-		this.gridColumnApi.getAllColumns().forEach(function (column) {
-			allColumnIds.push(column.colId);
-		});
-		this.gridColumnApi.autoSizeColumns(allColumnIds, skipHeader);
-	};
-
 	render() {
 		return (
 			<React.Fragment>
+				<Alert variant={"info"}>
+					Clustering de grupos utilizando K-means, con un K constante de 4!
+				</Alert>
 				<Container>
 					<Row
 						style={{
@@ -102,20 +83,19 @@ class Groups extends Component {
 						<Col
 							style={{
 								paddingRight: "50px",
+								width: "500px",
 							}}
 						>
 							<h5>Grupo 1</h5>
 							<div
 								className="ag-theme-alpine"
 								style={{
-									height: "350px",
+									height: "300px",
 								}}
 							>
 								<AgGridReact
-									modules={this.state.modules}
 									columnDefs={this.state.columnDefs}
 									rowData={this.state.group1.Data}
-									onGridReady={this.onGridReady}
 								></AgGridReact>
 							</div>
 						</Col>
@@ -124,15 +104,13 @@ class Groups extends Component {
 							<div
 								className="ag-theme-alpine"
 								style={{
-									height: "350px",
-									width: "600",
+									height: "300px",
+									width: "500px",
 								}}
 							>
 								<AgGridReact
-									modules={this.state.modules}
 									columnDefs={this.state.columnDefs}
 									rowData={this.state.group2.Data}
-									onGridReady={this.onGridReady}
 								></AgGridReact>
 							</div>
 						</Col>
@@ -153,15 +131,13 @@ class Groups extends Component {
 							<div
 								className="ag-theme-alpine"
 								style={{
-									height: "350px",
-									width: "600",
+									height: "300px",
+									width: "500px",
 								}}
 							>
 								<AgGridReact
-									modules={this.state.modules}
 									columnDefs={this.state.columnDefs}
 									rowData={this.state.group3.Data}
-									onGridReady={this.onGridReady}
 								></AgGridReact>
 							</div>
 						</Col>
@@ -171,15 +147,13 @@ class Groups extends Component {
 							<div
 								className="ag-theme-alpine"
 								style={{
-									height: "350px",
-									width: "600",
+									height: "300px",
+									width: "500px",
 								}}
 							>
 								<AgGridReact
-									modules={this.state.modules}
 									columnDefs={this.state.columnDefs}
 									rowData={this.state.group4.Data}
-									onGridReady={this.onGridReady}
 								></AgGridReact>
 							</div>
 						</Col>

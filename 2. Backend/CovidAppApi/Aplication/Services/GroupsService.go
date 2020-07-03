@@ -203,7 +203,7 @@ func findClustersNtimes() model.ClustersString {
 
 	clusters := make([]model.ClusteredGroupString, 0, 4)
 	for i := 0; i < len(min.Clusters); i++ {
-		auxGroup := make([]model.GroupDataDistrictString, 0, 400)
+		auxGroup := make([]model.GroupDataString, 0, 400)
 		for j := 0; j < len(min.Clusters[i].Data); j++ {
 
 			distrito := ""
@@ -262,7 +262,23 @@ func findClustersNtimes() model.ClustersString {
 				distrito = "Nothing"
 			}
 
-			aux := model.GroupDataDistrictString{Edad: min.Clusters[i].Data[j].Edad, Peso: min.Clusters[i].Data[j].Peso, Distrito: distrito}
+			respirar := ""
+			switch min.Clusters[i].Data[j].DificultadRespirar {
+			case 0:
+				respirar = "Falso"
+			case 1:
+				respirar = "Verdad"
+			}
+
+			perdidaOlfato := ""
+			switch min.Clusters[i].Data[j].PerdidaOlfato {
+			case 0:
+				perdidaOlfato = "Falso"
+			case 1:
+				perdidaOlfato = "Verdad"
+			}
+
+			aux := model.GroupDataString{Edad: min.Clusters[i].Data[j].Edad, Peso: min.Clusters[i].Data[j].Peso, Distrito: distrito, DificultadRespirar: respirar, PerdidaOlfato: perdidaOlfato}
 			auxGroup = append(auxGroup, aux)
 		}
 		name := "Group " + strconv.Itoa(i)

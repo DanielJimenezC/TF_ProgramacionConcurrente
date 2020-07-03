@@ -130,16 +130,11 @@ class Login extends Component {
 				>
 					<Modal.Header closeButton>
 						<Modal.Title id="contained-modal-title-vcenter">
-							Modal heading
+							Error de Autentificación
 						</Modal.Title>
 					</Modal.Header>
-					<Modal.Body>
-						<h4>Centered Modal</h4>
-						<p>
-							Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-							dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
-							ac consectetur ac, vestibulum at eros.
-						</p>
+					<Modal.Body className="text-center">
+						<p>Ha ingresado incorrectamente el usuario o la contraseña</p>
 					</Modal.Body>
 				</Modal>
 			</React.Fragment>
