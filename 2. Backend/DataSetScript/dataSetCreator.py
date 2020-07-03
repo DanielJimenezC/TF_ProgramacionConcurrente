@@ -1,6 +1,7 @@
 import csv
 import random
 
+sickPeople = 0
 random.seed()
 corpus = ""
 rows = []
@@ -86,8 +87,12 @@ for i in range(1000):
 
     sickIndex = random.randint(0, len(chances)-1)
     sick = chances[sickIndex]
+    if sick == 1:
+        sickPeople += 1
     row.append(sick)
     rows.append(row)
+
+print(sickPeople)
 
 with open('covidPeruDataSet.csv', 'w', newline='') as csvfile:
     writer = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
