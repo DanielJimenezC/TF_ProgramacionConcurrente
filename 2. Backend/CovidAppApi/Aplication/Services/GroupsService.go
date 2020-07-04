@@ -20,6 +20,7 @@ type group struct {
 var arrayOfGroupData = make([]model.GroupData, 0, 496)
 var arrayOfClusters = make([]model.Clusters, 0, 10)
 
+// GroupsService function
 func GroupsService() service.IGroupsService {
 	return &group{}
 }

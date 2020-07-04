@@ -17,7 +17,8 @@ import (
 type controller struct{}
 
 var (
-	userServ interfaces.IUserService = service.UserService()
+	userServ  interfaces.IUserService       = service.UserService()
+	blockServ interfaces.IBlockChainService = service.BlockChainService()
 )
 
 // IUserController interface
@@ -28,6 +29,7 @@ type IUserController interface {
 	Update(response http.ResponseWriter, request *http.Request)
 	Delete(response http.ResponseWriter, request *http.Request)
 	Login(response http.ResponseWriter, request *http.Request)
+	AddBlock(response http.ResponseWriter, request *http.Request)
 }
 
 // UserController Implementation
@@ -174,5 +176,27 @@ func (*controller) Login(response http.ResponseWriter, request *http.Request) {
 	} else {
 		response.WriteHeader(http.StatusOK)
 		json.NewEncoder(response).Encode(servError.ServiceError{Message: "Succesfull Login"})
+	}
+}
+
+func (*controller) AddBlock(response http.ResponseWriter, request *http.Request) {
+	header.AddHeaders(&response)
+	if (*request).Method == "OPTIONS" {
+		response.WriteHeader(http.StatusOK)
+	}
+	var block model.Block
+
+	err := json.NewDecoder(request.Body).Decode(&block)
+	if err != nil {
+		response.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(response).Encode(servError.ServiceError{Message: "Error decode Json users"})
+	}
+	done, err := blockServ.BlockChainGenerated(block)
+	if !done {
+		response.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(response).Encode(servError.ServiceError{Message: "Error al insertar Bloque"})
+	} else {
+		response.WriteHeader(http.StatusOK)
+		json.NewEncoder(response).Encode(servError.ServiceError{Message: "Succesfull"})
 	}
 }

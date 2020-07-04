@@ -1,5 +1,6 @@
 package entities
 
+// GroupData struct
 type GroupData struct {
 	Edad               int     `json:"edad,omitempty"`
 	Peso               float64 `json:"peso,omitempty"`
@@ -11,16 +12,19 @@ type GroupData struct {
 	Enfermo            int     `json:"enfermo,omitempty"`
 }
 
+// ClusteredGroup struct
 type ClusteredGroup struct {
 	Name string
 	Data []GroupData
 }
 
+// Clusters struct
 type Clusters struct {
 	Score    float64
 	Clusters []ClusteredGroup
 }
 
+// GroupDataString struct
 type GroupDataString struct {
 	Edad               int     `json:"edad,omitempty"`
 	Peso               float64 `json:"peso,omitempty"`
@@ -29,11 +33,13 @@ type GroupDataString struct {
 	PerdidaOlfato      string  `json:"perdidaOlfato,omitempty"`
 }
 
+// ClusteredGroupString struct
 type ClusteredGroupString struct {
 	Name string
 	Data []GroupDataString
 }
 
+// ClustersString struct
 type ClustersString struct {
 	Score    float64
 	Clusters []ClusteredGroupString

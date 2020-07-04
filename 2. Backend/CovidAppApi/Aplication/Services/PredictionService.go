@@ -21,6 +21,7 @@ type distances struct {
 	sick     int
 }
 
+// PredictionNonJson struct
 type PredictionNonJson struct {
 	Edad               int     `json:"edad,omitempty"`
 	Peso               float64 `json:"peso,omitempty"`

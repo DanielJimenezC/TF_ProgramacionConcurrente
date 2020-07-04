@@ -19,17 +19,25 @@ Developers:
 &nbsp;
 
 # Project Description
-<p style='text-align: justify;'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque non ante sem. Aenean purus sapien, scelerisque non lobortis a, placerat vel lorem. Maecenas eget lorem consequat, venenatis nulla sit amet, pulvinar lacus. Praesent ultrices aliquet felis non tincidunt. Donec aliquet tempor libero, ut imperdiet massa molestie et. Maecenas congue diam felis, cursus lobortis eros ultricies vitae. Vivamus eget vulputate lorem.Lorem</p> 
+<p style='text-align: justify;'>The project is a web application that helps predict if a person is infected with Covid-19, taking into account their location and identifying risk groups. The project has a frontend developed with React and a Backend developed with Go.</p> 
 
 &nbsp;
 
 # PreRequisites
-<p style='text-align: justify;'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque non ante sem. Aenean purus sapien, scelerisque non lobortis a, placerat vel lorem. Maecenas eget lorem consequat, venenatis nulla sit amet, pulvinar lacus. Praesent ultrices aliquet felis non tincidunt. Donec aliquet tempor libero, ut imperdiet massa molestie et. Maecenas congue diam felis, cursus lobortis eros ultricies vitae. Vivamus eget vulputate lorem.Lorem</p>
+<p style='text-align: justify;'>To run CovidApp (Backend & Frontend) you must have Go and Node.js installed.
+If you don't have them, you can download and install from the following links.</p>
+Go
+
+    https://golang.org
+
+Node.Js
+
+    https://nodejs.org/es/
 
 &nbsp;
 
 # Backend
-<p style='text-align: justify;'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque non ante sem. Aenean purus sapien, scelerisque non lobortis a, placerat vel lorem. Maecenas eget lorem consequat, venenatis nulla sit amet, pulvinar lacus. Praesent ultrices aliquet felis non tincidunt. Donec aliquet tempor libero, ut imperdiet massa molestie et. Maecenas congue diam felis, cursus lobortis eros ultricies vitae. Vivamus eget vulputate lorem.Lorem</p> 
+<p style='text-align: justify;'>The backend was developed using Go. We use Clean Architecture to divide the application into layers in order to decouple the code and make the maintenance or change of any library or connection easy.</p> 
 
 &nbsp;
 
@@ -55,7 +63,7 @@ Install Go Package bcrypt.
 
 ## Build & Run Api
 
-Go to CovidAppApi package then build it.
+Go to CovidAppApi package, then build it.
 
     go build
 
@@ -159,6 +167,20 @@ If everything is alright, the message "Server is up and running..." will be disp
 
 &nbsp;
 
+**POST** *(addBlock)*
+
+    /api/users/blockchain
+
+    request body:
+    {
+        "name": "name",
+        "birthday": "01/01/2001",
+        "dni": "07745011",
+        "telefono": "90149558"
+    }
+
+&nbsp;
+
 **DELETE** *(Delete user by Id)*
 
     /api/users/{id}
@@ -166,15 +188,23 @@ If everything is alright, the message "Server is up and running..." will be disp
 &nbsp;
 
 # FrontEnd
-<p style='text-align: justify;'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque non ante sem. Aenean purus sapien, scelerisque non lobortis a, placerat vel lorem. Maecenas eget lorem consequat, venenatis nulla sit amet, pulvinar lacus. Praesent ultrices aliquet felis non tincidunt. Donec aliquet tempor libero, ut imperdiet massa molestie et. Maecenas congue diam felis, cursus lobortis eros ultricies vitae. Vivamus eget vulputate lorem.Lorem</p> 
+<p style='text-align: justify;'>The web application was developed using React, a Javascript library. This application receives, and sends, information in Json format to the REST service "CovidApi". The web application has a login page, a module to know the risk groups, a module to perform a virtual diagnosis and a section for frequently asked questions.</p> 
 
 &nbsp;
 
 ## FrontEnd PreRequisites
 
+Install node modules using
+
+    npm install
+
 &nbsp;
 
-## Run Web Application
+## Start Web Application
+
+After started CovidAppApi, start web application using
+
+    npm start
 
 &nbsp;
 

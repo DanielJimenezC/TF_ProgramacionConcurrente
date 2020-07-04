@@ -31,5 +31,6 @@ func main() {
 	httpRouter.POST("/api/users/prediction", predictController.Predict)
 	httpRouter.DELETE("/api/users/{id}", userController.Delete)
 	httpRouter.POST("/api/users/login", userController.Login)
+	httpRouter.POST("/api/users/blockchain", userController.AddBlock)
 	httpRouter.SERVE(port)
 }

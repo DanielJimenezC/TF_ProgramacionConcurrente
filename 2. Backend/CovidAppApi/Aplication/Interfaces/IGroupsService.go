@@ -4,7 +4,7 @@ import (
 	entity "../../domain/entities"
 )
 
-// IPredictionService Interface
+// IGroupsService Interface
 type IGroupsService interface {
 	GetGroups() (entity.ClustersString, error)
 }
